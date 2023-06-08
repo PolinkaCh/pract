@@ -64,6 +64,18 @@ export default{
                 "name": "tOutput",
                 "paragraph": "Температура в обратном трубопроводе (°С)",
                 "value": ""
+            },
+            {
+                "id":9,
+                "name": "InTempNew",
+                "paragraph": "Расчетная температура в отапливаемом здании (°С)",
+                "value": ""
+            },
+            {
+                "id":10,
+                "name": "OutTempNew",
+                "paragraph": "Наружная температура (для искомого часа) (°С)",
+                "value": ""
             }
             ],
             result: false

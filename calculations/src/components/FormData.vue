@@ -4,7 +4,7 @@
                 <label>{{question.paragraph}} </label>
                 <input v-model="question.value" 
                 class="questionInput" type="number"
-                step="0.01">
+                step="0.1">
         </div>
         <button class="formCalculationButton" @click="calculate">Посчитать</button>
     </form> 
@@ -26,7 +26,7 @@ export default {
     methods: {
       async calculate(){
         this.getDate()
-        await this.findWeather()
+       // await this.findWeather()
         let Q = this.questions[0].value
         let V = this.questions[1].value
         let tj = this.questions[2].value
@@ -35,6 +35,8 @@ export default {
         let W = this.questions[5].value
         let Tinput = this.questions[6].value
         let Toutput = this.questions[7].value
+        let TinNew = this.questions[8].value
+        let ToutNew = this.questions[9].value
         let a
         if (t0 >= 0){
                 a = 2.05;
@@ -63,8 +65,8 @@ export default {
         } 
         this.findK(L,t0,tj,W)
         this.findQ(Q,a,V,tj,t0,this.res.K)
-        this.findK(L,t0,tj,this.res.windFuture) 
-        this.findQnew(a,V,this.res.q,tj,this.res.tempFuture,this.res.K)
+        this.findK(L,t0,tj,W) 
+        this.findQnew(a,V,this.res.q,TinNew,ToutNew,this.res.K)
         this.findM(Q,Tinput, Toutput)
         this.res.M1= this.res.M
         this.findM (this.res.Qnew,Tinput,Toutput)
@@ -72,17 +74,18 @@ export default {
         this.$emit('showresults', {data: this.res})     
       },
         findK (L,t0,tj,W){
-            let K = 10^(-2)*Math.sqrt(2*9.806*L*(1-(273+t0)/(273+tj)+W^2))
+            let K = 10**(-2)*(Math.sqrt((2*9.81*L*(1-(273+t0)/(273+tj)))+W**2))
+            //let K = 0.04
             this.res.K = K
-            console.log ("K=10^(-2)+Math.sqrt(2*9,806*",L,")*(1-273",t0,")/(273+",tj,")+",W,"^2))=", K)
+            console.log ("K=10^(-2)*Math.sqrt(2*9,806*",L,")*(1-273",t0,")/(273+",tj,")+",W,"^2))=", K)
         },
         findQ (Q,a,V,tj,t0,K){
-            let q = Q/(a*V*(tj-t0)*(1+K)*10^(-6))
+            let q = Q/(a*V*(tj-t0)*(1+K)*10**(-6))
             this.res.q = +q.toFixed(4)  
             console.log ("q=", Q,"/(",a,"*",V,"*(",tj,"-",t0,")*(1+",K,")*10^(-6))=", q)  
         },
         findQnew(a,V,q,tj,t0,K){
-            let Qnew = a*V*q*(tj-t0)*(1+K)*10^(-6)
+            let Qnew = a*V*q*(tj-t0)*(1+K)*10**(-6)
             this.res.Qnew= +Qnew.toFixed(4) 
             console.log ("Qnew=", a,"*",V,"*",q,"*(",tj,"-",t0,")*(1+",K,")*10^(-6)=", Qnew)     
         },
@@ -155,7 +158,7 @@ export default {
 }
 .formCalculation{
     border: 1px solid black;
-    width: 450px;
+    width: 480px;
     padding:25px;
     margin:0 auto
 }
