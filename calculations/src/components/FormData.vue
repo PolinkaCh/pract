@@ -7,12 +7,12 @@
                 step="0.1">
         </div>
         <div class="valveType">
-            <p>Клапан:</p>
-            <select class="valveOption" v-model="selected">
+            <p>Клапан:<b>*</b></p>
+            <select class="valveOption" v-model="selected" required>
                 <option  v-for="valve in valveType" :key="valve.id" :name="valve.name" v-bind:value="{ text: valve.name, chars: valve.chars }">{{ valve.name }}</option>
             </select>
         </div>
-        <button class="formCalculationButton" @click="calculate">Посчитать</button>
+        <button class="formCalculationButton" @click="this.selected.text? this.calculate(): null">Посчитать</button>
     </form> 
 </template>
 <script>
@@ -82,8 +82,12 @@ export default {
         this.res.valve = this.selected.chars   
       },
         findK (L,t0,tj,W){
-            let K = 10**(-2)*(Math.sqrt((2*9.81*L*(1-(273+t0)/(273+tj)))+W**2))
-            //let K = 0.04
+            let K
+            if (!L || !W ){
+                K = 0.04
+            } else {
+                K = 10**(-2)*(Math.sqrt((2*9.81*L*(1-(273+t0)/(273+tj)))+W**2))
+            }
             this.res.K = K
             console.log ("K=10^(-2)*Math.sqrt(2*9,806*",L,")*(1-273",t0,")/(273+",tj,")+",W,"^2))=", K)
         },
@@ -148,5 +152,8 @@ input::-webkit-inner-spin-button {
 .valveOption{
     padding: 5px;
     border-radius: 5%;
+}
+b {
+    color:red
 }
 </style>
