@@ -6,27 +6,34 @@
                 class="questionInput" type="number"
                 step="0.1">
         </div>
+        <div class="valveType">
+            <p>Клапан:</p>
+            <select class="valveOption" v-model="selected">
+                <option  v-for="valve in valveType" :key="valve.id" :name="valve.name" v-bind:value="{ text: valve.name, chars: valve.chars }">{{ valve.name }}</option>
+            </select>
+        </div>
         <button class="formCalculationButton" @click="calculate">Посчитать</button>
     </form> 
 </template>
 <script>
-import axios from 'axios'
 export default {
     data() {
         return{
             res: {},
+            selected: {},
             coords: {}
         }
     },
     props:{
         questions:{
             type:Array
+        },
+        valveType:{
+            type:Array
         }
     },
     methods: {
-      async calculate(){
-        this.getDate()
-       // await this.findWeather()
+      calculate(){
         let Q = this.questions[0].value
         let V = this.questions[1].value
         let tj = this.questions[2].value
@@ -71,7 +78,8 @@ export default {
         this.res.M1= this.res.M
         this.findM (this.res.Qnew,Tinput,Toutput)
         this.res.M2= this.res.M
-        this.$emit('showresults', {data: this.res})     
+        this.$emit('showresults', {data: this.res})  
+        this.res.valve = this.selected.chars   
       },
         findK (L,t0,tj,W){
             let K = 10**(-2)*(Math.sqrt((2*9.81*L*(1-(273+t0)/(273+tj)))+W**2))
@@ -93,58 +101,7 @@ export default {
             let M = Q/(Tin-Tout)
             this.res.M = +M.toFixed(4)
             console.log ("M=", Q,"/(",Tin,"-",Tout,")=",M) 
-        },
-
-        async findWeather(){
-        try {
-            const pos = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-            });
-            const latitude  = pos.coords.latitude;
-            const longitude = pos.coords.longitude;
-            this.coords = {latitude, longitude} 
-        } 
-        catch (error) {
-            console.log('Невозможно получить ваше местоположение', error);
-        } 
-        await axios.get ('http://api.openweathermap.org/data/2.5/forecast?lat='+`${this.coords.latitude}`+'&lon='+`${this.coords.longitude}`+'&units=metric&appid=ef66adfcbc80be689c655a64edf759f0',
-            {
-                headers: {'Content-Type': 'application/json'}
-            })
-            .then ((response)=>{      
-                this.res.tempFuture = response.data.list[this.res.i].main.temp
-                this.res.windFuture = response.data.list[this.res.i].wind.speed
-                console.log(response.data)
-            })
-            .catch((error) => { 
-            console.log ('Невозможно определить прогноз погоды', error)
-            })      
-        }, 
-        getDate () {
-            let date = new Date()
-                let current = new Date().getHours()
-                date.setHours(current+5)   
-                let next = date.getHours() 
-                let i
-                if (12<=next && next<15){
-                    i = 0
-                } else if (15<=next && next<18){
-                    i = 1
-                } else if (18<=next && next<21){
-                    i = 2
-                } else if (21<=next && next<24){
-                    i = 3
-                } else if (0<=next && next<3){
-                    i = 4
-                } else if (3<=next && next<6){
-                    i = 5
-                } else if (6<=next && next<9){
-                    i = 6
-                } else {
-                    i = 7
-                }
-                this.res.i = i
-        }  
+        }
  } 
 }
 </script>
@@ -159,7 +116,7 @@ export default {
 .formCalculation{
     border: 1px solid black;
     width: 480px;
-    padding:25px;
+    padding:10px 20px;
     margin:0 auto
 }
 .formCalculationButton{
@@ -182,5 +139,14 @@ export default {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+.valveType{
+    display: flex;
+    justify-content: space-between;
+    margin:10px 9px 0 0 
+}
+.valveOption{
+    padding: 5px;
+    border-radius: 5%;
 }
 </style>

@@ -1,8 +1,13 @@
 <template>
     <div>
         <h1 class="header">Регулирование потребления тепловой энергии здания</h1>
-        <calc-form :questions="questions" @showresults="showRes"/>
-        <div v-if=result><result :result="result"/></div>
+        <div v-bind:class="{ active: result }">
+            <calc-form :questions="questions" :valveType="valveType" @showresults="showRes"/>
+            <div>
+                <div v-if=result><result :result="result"/></div>
+                <div v-if=result><Diagram :result="result"/></div>
+            </div>
+        </div>
     </div>
     
 </template>
@@ -10,9 +15,10 @@
 <script>
 import CalcForm from './components/FormData.vue';
 import Result from './components/ResultInfo.vue';
+import Diagram from './components/DiagramInfo.vue'
 export default{
     components:{
-        CalcForm,Result
+        CalcForm,Result, Diagram
     },
     data(){
         return{
@@ -78,12 +84,33 @@ export default{
                 "value": ""
             }
             ],
+            valveType:[
+                {
+                    "id":1,
+                    "name":"SPL AMG2 PRO",
+                    "chars":{
+                        4: 20,
+                        100: 30,
+                        160: 40,
+                    }
+                },
+                {
+                    "id":2,
+                    "name":"VF2/VF3",
+                    "chars":{
+                        .63: 10,
+                        16: 15,
+                        63: 20,
+                        145: 30,
+                        220: 40,
+                    }
+                }
+            ],
             result: false
         }
     },
     methods:{
         showRes(q){
-        console.log(q.data)
         this.result = q.data
         }
     }
@@ -98,6 +125,10 @@ export default{
 }
 .header{
     text-align: center;
-    margin: 20px ;
+    margin: 10px ;
+}
+.active{
+    display: flex;
+    justify-content: space-around;
 }
 </style>
