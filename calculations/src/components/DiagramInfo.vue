@@ -16,35 +16,16 @@
     name: 'LineChart',
     components: { Line },
     computed: {
-      chartData() { 
-        this.sort
+    
+      chartData() {  
         return {
-            labels:  this.sort.k,
+            labels:  this.result.Kdiag,
             datasets: [
                 {
-                data: this.sort.l
+                data: this.result.Vdiag
                 }
             ]
         }
-       },
-       sort(){
-        const dataLabel = Object.keys(this.result.valve)
-        const dataValues = Object.values (this.result.valve)
-        let merged = dataValues.map((value,i)=>{
-            return{"value": dataValues[i], "key":dataLabel[i]}
-        })
-        const sort = merged.sort(function(a,b){
-            return a.key-b.key
-        })
-        const k =[];
-        const l =[]; 
-        let i = 0
-        for (i; i<sort.length;i++){
-            k.push(sort[i].key)
-            l.push(sort[i].value)
-        }
-        console.log(sort, k,l)
-        return {k,l}
        }
     },
     props:{
@@ -57,9 +38,10 @@
         options: {
             maintainAspectRatio: false,
             responsive: true,
+            aspectRatio: 1|1,
             plugins: {
                 title: {
-                    display: true,
+                    display: false,
                     text: 'График зависимости регулирования',
                     font: {
                         size: 18
@@ -76,8 +58,9 @@
   <style scoped>
   .lineInfo{
     max-width:300px;
-    max-height: max-content;
-	margin: 0 auto;
+    max-height: 350px;
+	margin: 0px auto;
   }
+
   </style>
 

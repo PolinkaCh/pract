@@ -6,13 +6,7 @@
                 class="questionInput" type="number"
                 step="0.1">
         </div>
-        <div class="valveType">
-            <p>Клапан:<b>*</b></p>
-            <select class="valveOption" v-model="selected" required>
-                <option  v-for="valve in valveType" :key="valve.id" :name="valve.name" v-bind:value="{ text: valve.name, chars: valve.chars }">{{ valve.name }}</option>
-            </select>
-        </div>
-        <button class="formCalculationButton" @click="this.selected.text? this.calculate(): null">Посчитать</button>
+        <button class="formCalculationButton" @click="this.calculate()">Посчитать</button>
     </form> 
 </template>
 <script>
@@ -20,17 +14,12 @@ export default {
     data() {
         return{
             res: {},
-            selected: {},
-            coords: {}
         }
     },
     props:{
         questions:{
             type:Array
         },
-        valveType:{
-            type:Array
-        }
     },
     methods: {
       calculate(){
@@ -78,8 +67,7 @@ export default {
         this.res.M1= this.res.M
         this.findM (this.res.Qnew,Tinput,Toutput)
         this.res.M2= this.res.M
-        this.$emit('showresults', {data: this.res})  
-        this.res.valve = this.selected.chars   
+        this.$emit('showresults', {data: this.res})     
       },
         findK (L,t0,tj,W){
             let K
@@ -89,22 +77,18 @@ export default {
                 K = 10**(-2)*(Math.sqrt((2*9.81*L*(1-(273+t0)/(273+tj)))+W**2))
             }
             this.res.K = K
-            console.log ("K=10^(-2)*Math.sqrt(2*9,806*",L,")*(1-273",t0,")/(273+",tj,")+",W,"^2))=", K)
         },
         findQ (Q,a,V,tj,t0,K){
             let q = Q/(a*V*(tj-t0)*(1+K)*10**(-6))
             this.res.q = +q.toFixed(4)  
-            console.log ("q=", Q,"/(",a,"*",V,"*(",tj,"-",t0,")*(1+",K,")*10^(-6))=", q)  
         },
         findQnew(a,V,q,tj,t0,K){
             let Qnew = a*V*q*(tj-t0)*(1+K)*10**(-6)
-            this.res.Qnew= +Qnew.toFixed(4) 
-            console.log ("Qnew=", a,"*",V,"*",q,"*(",tj,"-",t0,")*(1+",K,")*10^(-6)=", Qnew)     
+            this.res.Qnew= +Qnew.toFixed(4)      
         },
         findM (Q,Tin,Tout){
             let M = Q/(Tin-Tout)
             this.res.M = +M.toFixed(4)
-            console.log ("M=", Q,"/(",Tin,"-",Tout,")=",M) 
         }
  } 
 }
@@ -120,6 +104,7 @@ export default {
 .formCalculation{
     border: 1px solid black;
     width: 480px;
+    height:fit-content;
     padding:10px 20px;
     margin:0 auto
 }

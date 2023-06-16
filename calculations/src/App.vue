@@ -2,10 +2,10 @@
     <div>
         <h1 class="header">Регулирование потребления тепловой энергии здания</h1>
         <div v-bind:class="{ active: result }">
-            <calc-form :questions="questions" :valveType="valveType" @showresults="showRes"/>
+            <calc-form :questions="questions" @showresults="showRes"/>
             <div>
                 <div v-if=result><result :result="result"/></div>
-                <div v-if=result><Diagram :result="result"/></div>
+                <div v-if=result.Kdiag><Diagram :result="result"/></div>
             </div>
         </div>
     </div>
@@ -84,34 +84,29 @@ export default{
                 "value": ""
             }
             ],
-            valveType:[
-                {
-                    "id":1,
-                    "name":"SPL AMG2 PRO",
-                    "chars":{
-                        4: 20,
-                        100: 30,
-                        160: 40,
-                    }
-                },
-                {
-                    "id":2,
-                    "name":"VF2/VF3",
-                    "chars":{
-                        .63: 10,
-                        16: 15,
-                        63: 20,
-                        145: 30,
-                        220: 40,
-                    }
-                }
-            ],
             result: false
         }
     },
     methods:{
+        calc(){
+            const k = []
+            const v= []
+            let y=0
+            let i = 0
+            while (i<101){
+                y = 0.01*i**2+4
+                k.push(i)
+                v.push(y)
+                i+=10
+            }
+            console.log(k)
+            console.log(v)
+            this.result.Kdiag = k
+            this.result.Vdiag = v
+        },
         showRes(q){
-        this.result = q.data
+            this.result = q.data
+            this.calc()
         }
     }
 }

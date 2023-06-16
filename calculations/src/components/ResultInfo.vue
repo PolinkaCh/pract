@@ -21,11 +21,11 @@ export default {
 <style>
 .result{
     text-align: center;
-    margin: 20px;
+    margin: 0px 35px;
     font-size: 20px
 }
 .result h2{
-    margin-bottom:10px
+    margin-bottom:5px
 }
 .resultTable, th, td{
     border: 1px solid black;
