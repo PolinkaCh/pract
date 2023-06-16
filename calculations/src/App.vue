@@ -94,7 +94,7 @@ export default{
             let y=0
             let i = 0
             while (i<101){
-                y = 0.01*i**2+4
+                y = 0.01*i**2
                 k.push(i)
                 v.push(y)
                 i+=10
