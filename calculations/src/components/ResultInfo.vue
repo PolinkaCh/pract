@@ -6,6 +6,9 @@
             <tr><th>Новое значение количества теплоты:</th><td>Q = {{ result.Qnew }}</td></tr>
             <tr><th>Расход теплоносителя в 1-м случае:</th><td>M1 = {{ result.M1 }}</td></tr>
             <tr><th>Расход теплоносителя во 2-ом случае:</th><td>M2 = {{ result.M2 }}</td></tr>
+            <tr><th>Пропускная способность в первом случае: </th><td>{{ result.valvefir }}</td></tr>
+            <tr><th>Пропускная способность во втором случае:</th><td> {{ result.valvesec }}</td></tr>
+            <tr><th>Процент открытия клапана во втором случае</th><td> {{ result.final }}</td></tr>
             </table>
     </div>  
 </template>

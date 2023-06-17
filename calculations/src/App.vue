@@ -82,31 +82,20 @@ export default{
                 "name": "OutTempNew",
                 "paragraph": "Наружная температура (для искомого часа) (°С)",
                 "value": ""
+            },
+            {
+                "id":11,
+                "name": "valve",
+                "paragraph": "Положение клапана в настоящее время (%)",
+                "value": ""
             }
             ],
             result: false
         }
     },
     methods:{
-        calc(){
-            const k = []
-            const v= []
-            let y=0
-            let i = 0
-            while (i<101){
-                y = 0.01*i**2
-                k.push(i)
-                v.push(y)
-                i+=10
-            }
-            console.log(k)
-            console.log(v)
-            this.result.Kdiag = k
-            this.result.Vdiag = v
-        },
         showRes(q){
             this.result = q.data
-            this.calc()
         }
     }
 }
@@ -120,7 +109,7 @@ export default{
 }
 .header{
     text-align: center;
-    margin: 10px ;
+    margin: 20px ;
 }
 .active{
     display: flex;

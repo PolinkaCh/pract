@@ -33,6 +33,7 @@ export default {
         let Toutput = this.questions[7].value
         let TinNew = this.questions[8].value
         let ToutNew = this.questions[9].value
+        let valve = this.questions[10].value
         let a
         if (t0 >= 0){
                 a = 2.05;
@@ -67,6 +68,8 @@ export default {
         this.res.M1= this.res.M
         this.findM (this.res.Qnew,Tinput,Toutput)
         this.res.M2= this.res.M
+        this.calc()
+        this.calcOpen(valve,this.res.M1,this.res.M2)
         this.$emit('showresults', {data: this.res})     
       },
         findK (L,t0,tj,W){
@@ -89,6 +92,35 @@ export default {
         findM (Q,Tin,Tout){
             let M = Q/(Tin-Tout)
             this.res.M = +M.toFixed(4)
+        },
+        calc(){
+            const k = []
+            const v= []
+            let y=0
+            let i = 0
+            while (i<1){
+                y = (i+i**5)/2
+                k.push(i.toFixed(1))
+                v.push(y)
+                i+=0.1
+            }
+            this.res.Kdiag = k
+            this.res.Vdiag = v
+        },
+        calcOpen(valve,M1,M2){
+            let y= ((valve*0.01+(valve*0.01)**5)/2).toFixed(2)
+            let result = (y*(M2/M1)).toFixed(2)
+            let i = 0  
+            while (i<1){
+                let func = ((i+(i)**5)/2).toFixed(2)
+                let x= i.toFixed(2)
+                if (func===result){
+                    this.res.final = x
+                }
+                i+=0.01
+            }
+            this.res.valvefir = y
+            this.res.valvesec = result
         }
  } 
 }
@@ -106,7 +138,7 @@ export default {
     width: 480px;
     height:fit-content;
     padding:10px 20px;
-    margin:0 auto
+    margin: 0 auto
 }
 .formCalculationButton{
     padding: 10px;
