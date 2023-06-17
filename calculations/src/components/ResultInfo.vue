@@ -1,15 +1,15 @@
 <template>
     <div class="result">
         <h2>Результат:</h2>
-            <table class = "resultTable">
+        <table class = "resultTable">
             <tr><th>Фактическая удельная отопительная характеристика здания:</th><td>q = {{ result.q }}</td></tr>
             <tr><th>Новое значение количества теплоты:</th><td>Q = {{ result.Qnew }}</td></tr>
             <tr><th>Расход теплоносителя в 1-м случае:</th><td>M1 = {{ result.M1 }}</td></tr>
             <tr><th>Расход теплоносителя во 2-ом случае:</th><td>M2 = {{ result.M2 }}</td></tr>
             <tr><th>Пропускная способность в первом случае: </th><td>{{ result.valvefir }}</td></tr>
             <tr><th>Пропускная способность во втором случае:</th><td> {{ result.valvesec }}</td></tr>
-            <tr><th>Процент открытия клапана во втором случае</th><td> {{ result.final }}</td></tr>
-            </table>
+            <tr><th>Процент открытия клапана во втором случае</th><td> {{ result.final }}%</td></tr>
+        </table>
     </div>  
 </template>
 <script>

@@ -34,36 +34,11 @@ export default {
         let TinNew = this.questions[8].value
         let ToutNew = this.questions[9].value
         let valve = this.questions[10].value
-        let a
-        if (t0 >= 0){
-                a = 2.05;
-        } else if(-5 <= t0  && t0<0){
-                a = 1.67;
-        } else if(-10 <= t0 && t0<5){
-                a = 1.45;
-        } else if(-15 <= t0 && t0<10){
-                a = 1.29;
-         } else if(-20 <= t0 && t0<15){
-                a = 1.17;
-        } else if(-25 <= t0 && t0<20){
-                a = 1.08;
-        } else if(-30 <= t0 && t0<25){
-                a = 1;
-        } else if(-35 <= t0 && t0<30){
-                a = 0.95;
-        } else if(-40 <= t0 && t0<35){   
-                a = 0.9;
-        } else if(-45 <= t0 && t0<40){        
-                a = 0.85;
-        } else if(-50 <= t0 && t0<45){ 
-                a = 0.82;
-        } else if(-55 <= t0 && t0<50){ 
-                a = 0.8;
-        } 
+        this.findA(t0)
         this.findK(L,t0,tj,W)
-        this.findQ(Q,a,V,tj,t0,this.res.K)
+        this.findQ(Q,this.res.a,V,tj,t0,this.res.K)
         this.findK(L,t0,tj,W) 
-        this.findQnew(a,V,this.res.q,TinNew,ToutNew,this.res.K)
+        this.findQnew(this.res.a,V,this.res.q,TinNew,ToutNew,this.res.K)
         this.findM(Q,Tinput, Toutput)
         this.res.M1= this.res.M
         this.findM (this.res.Qnew,Tinput,Toutput)
@@ -72,6 +47,35 @@ export default {
         this.calcOpen(valve,this.res.M1,this.res.M2)
         this.$emit('showresults', {data: this.res})     
       },
+        findA (t0){
+            let a
+            if (t0 >= 0){
+                    a = 2.05;
+            } else if(-5 <= t0  && t0<0){
+                    a = 1.67;
+            } else if(-10 <= t0 && t0<5){
+                    a = 1.45;
+            } else if(-15 <= t0 && t0<10){
+                    a = 1.29;
+            } else if(-20 <= t0 && t0<15){
+                    a = 1.17;
+            } else if(-25 <= t0 && t0<20){
+                    a = 1.08;
+            } else if(-30 <= t0 && t0<25){
+                    a = 1;
+            } else if(-35 <= t0 && t0<30){
+                    a = 0.95;
+            } else if(-40 <= t0 && t0<35){   
+                    a = 0.9;
+            } else if(-45 <= t0 && t0<40){        
+                    a = 0.85;
+            } else if(-50 <= t0 && t0<45){ 
+                    a = 0.82;
+            } else if(-55 <= t0 && t0<50){ 
+                    a = 0.8;
+            } 
+            this.res.a = a
+        },
         findK (L,t0,tj,W){
             let K
             if (!L || !W ){
@@ -115,7 +119,7 @@ export default {
                 let func = ((i+(i)**5)/2).toFixed(2)
                 let x= i.toFixed(2)
                 if (func===result){
-                    this.res.final = x
+                    this.res.final = x*100
                 }
                 i+=0.01
             }

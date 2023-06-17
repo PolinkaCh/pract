@@ -5,7 +5,6 @@
 </template>
   
   <script>
-  // DataPage.vue
   import { Line } from 'vue-chartjs'
   import { Chart as ChartJS, PointElement, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale } from 'chart.js'
   
@@ -59,7 +58,7 @@
   .lineInfo{
     max-width:300px;
     max-height: 350px;
-	margin: 0px auto;
+    margin: 0px auto;
   }
 
   </style>
